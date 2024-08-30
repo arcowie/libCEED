@@ -9,7 +9,13 @@
 //! Ceed QFunction. A Ceed Operator connects Ceed ElemRestrictions,
 //! Ceed Bases, and Ceed QFunctions.
 
-use crate::prelude::*;
+use crate::{
+    basis::{Basis, BasisOpt},
+    elem_restriction::{ElemRestriction, ElemRestrictionOpt},
+    prelude::*,
+    qfunction::QFunctionOpt,
+    vector::{Vector, VectorOpt},
+};
 
 // -----------------------------------------------------------------------------
 // Operator Field context wrapper
@@ -63,7 +69,7 @@ impl<'a> OperatorField<'a> {
     /// Get the name of an OperatorField
     ///
     /// ```
-    /// # use libceed::prelude::*;
+    /// # use libceed::{prelude::*, BasisOpt, ElemRestrictionOpt, MemType, QFunctionOpt, QuadMode, VectorOpt};
     /// # fn main() -> libceed::Result<()> {
     /// # let ceed = libceed::Ceed::default_init();
     /// let qf = ceed.q_function_interior_by_name("Mass1DBuild")?;
@@ -110,7 +116,7 @@ impl<'a> OperatorField<'a> {
     /// Get the ElemRestriction of an OperatorField
     ///
     /// ```
-    /// # use libceed::prelude::*;
+    /// # use libceed::{prelude::*, BasisOpt, ElemRestrictionOpt, MemType, QFunctionOpt, QuadMode, VectorOpt};
     /// # fn main() -> libceed::Result<()> {
     /// # let ceed = libceed::Ceed::default_init();
     /// let qf = ceed.q_function_interior_by_name("Mass1DBuild")?;
@@ -182,7 +188,7 @@ impl<'a> OperatorField<'a> {
     /// Get the Basis of an OperatorField
     ///
     /// ```
-    /// # use libceed::prelude::*;
+    /// # use libceed::{prelude::*, BasisOpt, ElemRestrictionOpt, MemType, QFunctionOpt, QuadMode, VectorOpt};
     /// # fn main() -> libceed::Result<()> {
     /// # let ceed = libceed::Ceed::default_init();
     /// let qf = ceed.q_function_interior_by_name("Mass1DBuild")?;
@@ -244,7 +250,7 @@ impl<'a> OperatorField<'a> {
     /// Get the Vector of an OperatorField
     ///
     /// ```
-    /// # use libceed::prelude::*;
+    /// # use libceed::{prelude::*, BasisOpt, ElemRestrictionOpt, MemType, QFunctionOpt, QuadMode, VectorOpt};
     /// # fn main() -> libceed::Result<()> {
     /// # let ceed = libceed::Ceed::default_init();
     /// let qf = ceed.q_function_interior_by_name("Mass1DBuild")?;
@@ -342,7 +348,7 @@ impl<'a> fmt::Display for OperatorCore<'a> {
 /// View an Operator
 ///
 /// ```
-/// # use libceed::prelude::*;
+/// # use libceed::{prelude::*, BasisOpt, ElemRestrictionOpt, MemType, QFunctionOpt, QuadMode, VectorOpt};
 /// # fn main() -> libceed::Result<()> {
 /// # let ceed = libceed::Ceed::default_init();
 /// let qf = ceed.q_function_interior_by_name("Mass1DBuild")?;
@@ -382,7 +388,7 @@ impl<'a> fmt::Display for Operator<'a> {
 /// View a composite Operator
 ///
 /// ```
-/// # use libceed::prelude::*;
+/// # use libceed::{prelude::*, BasisOpt, ElemRestrictionOpt, MemType, QFunctionOpt, QuadMode, VectorOpt};
 /// # fn main() -> libceed::Result<()> {
 /// # let ceed = libceed::Ceed::default_init();
 ///
@@ -580,7 +586,7 @@ impl<'a> Operator<'a> {
     /// * 'name' - Name to set
     ///
     /// ```
-    /// # use libceed::prelude::*;
+    /// # use libceed::{prelude::*, BasisOpt, ElemRestrictionOpt, MemType, QFunctionOpt, QuadMode, VectorOpt};
     /// # fn main() -> libceed::Result<()> {
     /// # let ceed = libceed::Ceed::default_init();
     /// let qf = ceed.q_function_interior_by_name("Mass1DBuild")?;
@@ -621,7 +627,7 @@ impl<'a> Operator<'a> {
     /// * `output` - Output Vector
     ///
     /// ```
-    /// # use libceed::prelude::*;
+    /// # use libceed::{prelude::*, BasisOpt, ElemRestrictionOpt, MemType, QFunctionOpt, QuadMode, Scalar, VectorOpt};
     /// # fn main() -> libceed::Result<()> {
     /// # let ceed = libceed::Ceed::default_init();
     /// let ne = 4;
@@ -699,7 +705,7 @@ impl<'a> Operator<'a> {
     /// * `output` - Output Vector
     ///
     /// ```
-    /// # use libceed::prelude::*;
+    /// # use libceed::{prelude::*, BasisOpt, ElemRestrictionOpt, MemType, QFunctionOpt, QuadMode, Scalar, VectorOpt};
     /// # fn main() -> libceed::Result<()> {
     /// # let ceed = libceed::Ceed::default_init();
     /// let ne = 4;
@@ -779,7 +785,7 @@ impl<'a> Operator<'a> {
     ///
     ///
     /// ```
-    /// # use libceed::prelude::*;
+    /// # use libceed::{prelude::*, MemType, QFunctionOpt, QuadMode, VectorOpt};
     /// # fn main() -> libceed::Result<()> {
     /// # let ceed = libceed::Ceed::default_init();
     /// let qf = ceed.q_function_interior_by_name("Mass1DBuild")?;
@@ -828,7 +834,7 @@ impl<'a> Operator<'a> {
     /// Get a slice of Operator inputs
     ///
     /// ```
-    /// # use libceed::prelude::*;
+    /// # use libceed::{prelude::*, BasisOpt, ElemRestrictionOpt, MemType, QFunctionOpt, QuadMode, Scalar, VectorOpt};
     /// # fn main() -> libceed::Result<()> {
     /// # let ceed = libceed::Ceed::default_init();
     /// let qf = ceed.q_function_interior_by_name("Mass1DBuild")?;
@@ -900,7 +906,7 @@ impl<'a> Operator<'a> {
     /// Get a slice of Operator outputs
     ///
     /// ```
-    /// # use libceed::prelude::*;
+    /// # use libceed::{prelude::*, BasisOpt, ElemRestrictionOpt, MemType, QFunctionOpt, QuadMode, VectorOpt};
     /// # fn main() -> libceed::Result<()> {
     /// # let ceed = libceed::Ceed::default_init();
     /// let qf = ceed.q_function_interior_by_name("Mass1DBuild")?;
@@ -972,7 +978,7 @@ impl<'a> Operator<'a> {
     /// Check if Operator is setup correctly
     ///
     /// ```
-    /// # use libceed::prelude::*;
+    /// # use libceed::{prelude::*, BasisOpt, ElemRestrictionOpt, MemType, QFunctionOpt, QuadMode, VectorOpt};
     /// # fn main() -> libceed::Result<()> {
     /// # let ceed = libceed::Ceed::default_init();
     /// let ne = 4;
@@ -1015,7 +1021,7 @@ impl<'a> Operator<'a> {
     ///
     ///
     /// ```
-    /// # use libceed::prelude::*;
+    /// # use libceed::{prelude::*, MemType, QFunctionOpt, QuadMode, VectorOpt};
     /// # fn main() -> libceed::Result<()> {
     /// # let ceed = libceed::Ceed::default_init();
     /// let qf = ceed.q_function_interior_by_name("Mass1DBuild")?;
@@ -1052,7 +1058,7 @@ impl<'a> Operator<'a> {
     ///
     ///
     /// ```
-    /// # use libceed::prelude::*;
+    /// # use libceed::{prelude::*, MemType, QFunctionOpt, QuadMode, VectorOpt};
     /// # fn main() -> libceed::Result<()> {
     /// # let ceed = libceed::Ceed::default_init();
     /// let qf = ceed.q_function_interior_by_name("Mass1DBuild")?;
@@ -1099,7 +1105,7 @@ impl<'a> Operator<'a> {
     /// * `assembled` - Vector to store assembled Operator diagonal
     ///
     /// ```
-    /// # use libceed::prelude::*;
+    /// # use libceed::{prelude::*, BasisOpt, ElemRestrictionOpt, MemType, QFunctionOpt, QuadMode, VectorOpt};
     /// # fn main() -> libceed::Result<()> {
     /// # let ceed = libceed::Ceed::default_init();
     /// let ne = 4;
@@ -1206,7 +1212,7 @@ impl<'a> Operator<'a> {
     ///
     ///
     /// ```
-    /// # use libceed::prelude::*;
+    /// # use libceed::{prelude::*, BasisOpt, ElemRestrictionOpt, MemType, QFunctionOpt, QuadMode, Scalar, VectorOpt};
     /// # fn main() -> libceed::Result<()> {
     /// # let ceed = libceed::Ceed::default_init();
     /// let ne = 4;
@@ -1318,7 +1324,7 @@ impl<'a> Operator<'a> {
     ///                   `[nodes, component out, component in]`.
     ///
     /// ```
-    /// # use libceed::prelude::*;
+    /// # use libceed::{prelude::*, BasisOpt, ElemRestrictionOpt, EvalMode, MemType, QFunctionInputs, QFunctionOpt, QFunctionOutputs, QuadMode, VectorOpt};
     /// # fn main() -> libceed::Result<()> {
     /// # let ceed = libceed::Ceed::default_init();
     /// let ne = 4;
@@ -1457,7 +1463,7 @@ impl<'a> Operator<'a> {
     ///                   `[nodes, component out, component in]`.
     ///
     /// ```
-    /// # use libceed::prelude::*;
+    /// # use libceed::{prelude::*, BasisOpt, ElemRestrictionOpt, EvalMode, MemType, QFunctionInputs, QFunctionOpt, QFunctionOutputs, QuadMode, Scalar, VectorOpt};
     /// # fn main() -> libceed::Result<()> {
     /// # let ceed = libceed::Ceed::default_init();
     /// let ne = 4;
@@ -1589,7 +1595,7 @@ impl<'a> Operator<'a> {
     /// * `basis_coarse` - Coarse grid active vector basis
     ///
     /// ```
-    /// # use libceed::prelude::*;
+    /// # use libceed::{prelude::*, BasisOpt, ElemRestrictionOpt, MemType, QFunctionOpt, QuadMode, Scalar, VectorOpt};
     /// # fn main() -> libceed::Result<()> {
     /// # let ceed = libceed::Ceed::default_init();
     /// let ne = 15;
@@ -1749,7 +1755,7 @@ impl<'a> Operator<'a> {
     /// * `interp_c_to_f` - Matrix for coarse to fine
     ///
     /// ```
-    /// # use libceed::prelude::*;
+    /// # use libceed::{prelude::*, BasisOpt, ElemRestrictionOpt, EvalMode, MemType, QFunctionOpt, QuadMode, Scalar, TransposeMode, VectorOpt};
     /// # fn main() -> libceed::Result<()> {
     /// # let ceed = libceed::Ceed::default_init();
     /// let ne = 15;
@@ -1907,7 +1913,7 @@ impl<'a> Operator<'a> {
         p_mult_fine: &Vector,
         rstr_coarse: &ElemRestriction,
         basis_coarse: &Basis,
-        interpCtoF: &Vec<Scalar>,
+        interpCtoF: &Vec<crate::Scalar>,
     ) -> crate::Result<(Operator<'b>, Operator<'b>, Operator<'b>)> {
         let mut ptr_coarse = std::ptr::null_mut();
         let mut ptr_prolong = std::ptr::null_mut();
@@ -1940,7 +1946,7 @@ impl<'a> Operator<'a> {
     /// * `interp_c_to_f` - Matrix for coarse to fine
     ///
     /// ```
-    /// # use libceed::prelude::*;
+    /// # use libceed::{prelude::*, BasisOpt, ElemRestrictionOpt, EvalMode, MemType, QFunctionOpt, QuadMode, Scalar, TransposeMode, VectorOpt};
     /// # fn main() -> libceed::Result<()> {
     /// # let ceed = libceed::Ceed::default_init();
     /// let ne = 15;
@@ -2098,7 +2104,7 @@ impl<'a> Operator<'a> {
         p_mult_fine: &Vector,
         rstr_coarse: &ElemRestriction,
         basis_coarse: &Basis,
-        interpCtoF: &[Scalar],
+        interpCtoF: &[crate::Scalar],
     ) -> crate::Result<(Operator<'b>, Operator<'b>, Operator<'b>)> {
         let mut ptr_coarse = std::ptr::null_mut();
         let mut ptr_prolong = std::ptr::null_mut();
@@ -2145,7 +2151,7 @@ impl<'a> CompositeOperator<'a> {
     /// * 'name' - Name to set
     ///
     /// ```
-    /// # use libceed::prelude::*;
+    /// # use libceed::{prelude::*, BasisOpt, MemType, QFunctionOpt, QuadMode, VectorOpt};
     /// # fn main() -> libceed::Result<()> {
     /// # let ceed = libceed::Ceed::default_init();
     ///
@@ -2202,7 +2208,7 @@ impl<'a> CompositeOperator<'a> {
     /// * `output` - Output Vector
     ///
     /// ```
-    /// # use libceed::prelude::*;
+    /// # use libceed::{prelude::*, BasisOpt, ElemRestrictionOpt, MemType, QFunctionOpt, QuadMode, Scalar, VectorOpt};
     /// # fn main() -> libceed::Result<()> {
     /// # let ceed = libceed::Ceed::default_init();
     /// let ne = 4;
@@ -2299,7 +2305,7 @@ impl<'a> CompositeOperator<'a> {
     /// * `output` - Output Vector
     ///
     /// ```
-    /// # use libceed::prelude::*;
+    /// # use libceed::{prelude::*, BasisOpt, ElemRestrictionOpt, MemType, QFunctionOpt, QuadMode, Scalar, VectorOpt};
     /// # fn main() -> libceed::Result<()> {
     /// # let ceed = libceed::Ceed::default_init();
     /// let ne = 4;
@@ -2395,7 +2401,7 @@ impl<'a> CompositeOperator<'a> {
     /// * `subop` - Sub-Operator
     ///
     /// ```
-    /// # use libceed::prelude::*;
+    /// # use libceed::{prelude::*, QFunctionOpt};
     /// # fn main() -> libceed::Result<()> {
     /// # let ceed = libceed::Ceed::default_init();
     /// let mut op = ceed.composite_operator()?;
@@ -2421,7 +2427,7 @@ impl<'a> CompositeOperator<'a> {
     /// Check if CompositeOperator is setup correctly
     ///
     /// ```
-    /// # use libceed::prelude::*;
+    /// # use libceed::{prelude::*, BasisOpt, ElemRestrictionOpt, MemType, QFunctionOpt, QuadMode, VectorOpt};
     /// # fn main() -> libceed::Result<()> {
     /// # let ceed = libceed::Ceed::default_init();
     /// let ne = 4;
