@@ -1051,6 +1051,26 @@ int CeedQFunctionApply(CeedQFunction qf, CeedInt Q, CeedVector *u, CeedVector *v
 }
 
 /**
+ * @brief  Set the user-defined header for a `CeedQFunction`
+ * The user-defined header is intended to provide support for types that are not natively supported during JiT compilation for GPU backends.
+ * Suppling NULL for the `header` parameter will remove any existing user-defined header.
+ * 
+ * @param[in]  qf:     `CeedQFunction` to modify
+ * @param[in]  header:  string that contains the user-defined header
+ * 
+ * @return An error code: 0 - success, otherwise - failure
+ * 
+ * @ref User
+ **/ 
+int CeedQFunctionSetUserHeader(CeedQFunction qf, const char *header) {
+
+  if (qf->user_header) CeedCall(CeedFree(&qf->user_header));
+  if (header) CeedCall(CeedStringAllocCopy(header, &qf->user_header));
+  return CEED_ERROR_SUCCESS;
+}
+
+
+/**
   @brief Destroy a `CeedQFunction`
 
   @param[in,out] qf `CeedQFunction` to destroy
@@ -1064,6 +1084,9 @@ int CeedQFunctionDestroy(CeedQFunction *qf) {
     *qf = NULL;
     return CEED_ERROR_SUCCESS;
   }
+
+  // user_header is set with strdup which allocates memory and copies the string. Therefore it must be explicitly freed to avoid a memory leak.
+  if((*qf)->user_header != NULL) CeedFree((*qf)->user_header);
   // Backend destroy
   if ((*qf)->Destroy) {
     CeedCall((*qf)->Destroy(*qf));

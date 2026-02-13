@@ -253,6 +253,7 @@ struct CeedQFunction_private {
   CeedInt              num_input_fields, num_output_fields;
   CeedQFunctionUser    function;
   CeedInt              user_flop_estimate;
+  char                *user_header; /* String containing the user-defined header */
   const char          *user_source;
   const char          *source_path;
   const char          *kernel_name;

@@ -54,10 +54,12 @@ extern "C" int CeedQFunctionBuildKernel_Cuda_ref(CeedQFunction qf) {
   string        qfunction_name(data->qfunction_name);
   string        read_write(read_write_kernel_source);
   string        kernel_name = "CeedKernelCudaRefQFunction_" + qfunction_name;
+  string        user_header(qf->user_header ? qf->user_header : "");
   ostringstream code;
 
   // Defintions
   code << read_write;
+  code << user_header;
   code << qfunction_source;
   code << "\n";
   code << "extern \"C\" __global__ void " << kernel_name << "(void *ctx, CeedInt Q, Fields_Cuda fields) {\n";
