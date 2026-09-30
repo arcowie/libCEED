@@ -105,7 +105,7 @@ class CeedSuiteSpec(SuiteSpec):
         if contains_any(resource, ['occa']) and startswith_any(
                 test, ['t4', 't5', 'ex', 'mfem', 'nek', 'petsc', 'fluids', 'solids']):
             return 'OCCA mode not supported'
-        if test.startswith('t318') and contains_any(resource, ['/gpu/cuda/ref']):
+        if test.startswith('t318') and contains_any(resource, ['/gpu/cuda/ref', '/gpu/cuda/petsc']):
             return 'CUDA ref backend not supported'
         if test.startswith('t506') and contains_any(resource, ['/gpu/cuda/shared']):
             return 'CUDA shared backend not supported'

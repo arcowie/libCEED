@@ -79,6 +79,11 @@ int CeedCompile_Cuda(Ceed ceed, const char *source, CUmodule *module, const Ceed
   // Non-macro options
   opts[0] = "-default-device";
   CeedCallBackend(CeedGetData(ceed, &ceed_data));
+  // User-provided JiT source file, if any (e.g. `/gpu/cuda/petsc:jit_source_file=/path/to/file`)
+  if (ceed_data->jit_source) {
+    code << ceed_data->jit_source;
+    code << "\n\n";
+  }
   CeedCallCuda(ceed, cudaGetDeviceProperties(&prop, ceed_data->device_id));
   std::string arch_arg =
 #if CUDA_VERSION >= 11010
