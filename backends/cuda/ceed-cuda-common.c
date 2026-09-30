@@ -9,7 +9,9 @@
 
 #include <ceed.h>
 #include <ceed/backend.h>
+#include <ceed/jit-tools.h>
 #include <cuda_runtime.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -35,6 +37,35 @@ int CeedInit_Cuda(Ceed ceed, const char *resource) {
 }
 
 //------------------------------------------------------------------------------
+// Parse and load a user-provided JiT source file from the resource string, if provided
+//
+// The resource may contain `:<option_name>=/path/to/file`, where the file is loaded and its contents are included in
+// every subsequent JiT compilation for this `Ceed`. If the option is not present in the resource, this is a no-op.
+//------------------------------------------------------------------------------
+int CeedSetJitSourceFile_Cuda(Ceed ceed, const char *resource, const char *option_name) {
+  Ceed_Cuda  *data;
+  char        option[CEED_MAX_RESOURCE_LEN];
+  const char *path_start;
+  const char *path_end;
+  size_t      path_len;
+
+  snprintf(option, sizeof(option), ":%s=", option_name);
+  path_start = strstr(resource, option);
+  if (!path_start) return CEED_ERROR_SUCCESS;
+  path_start += strlen(option);
+  path_end = strchr(path_start, ':');
+  path_len = path_end ? (size_t)(path_end - path_start) : strlen(path_start);
+  CeedCheck(path_len > 0, ceed, CEED_ERROR_BACKEND, "Resource %s must specify a non-empty JiT source file path with '%s/path/to/file'", resource,
+            option);
+
+  CeedCallBackend(CeedGetData(ceed, &data));
+  CeedCallBackend(CeedCalloc(path_len + 1, &data->jit_source_path));
+  memcpy(data->jit_source_path, path_start, path_len);
+  CeedCallBackend(CeedLoadSourceToBuffer(ceed, data->jit_source_path, &data->jit_source));
+  return CEED_ERROR_SUCCESS;
+}
+
+//------------------------------------------------------------------------------
 // Backend destroy
 //------------------------------------------------------------------------------
 int CeedDestroy_Cuda(Ceed ceed) {
@@ -42,6 +73,8 @@ int CeedDestroy_Cuda(Ceed ceed) {
 
   CeedCallBackend(CeedGetData(ceed, &data));
   if (data->cublas_handle) CeedCallCublas(ceed, cublasDestroy(data->cublas_handle));
+  CeedCallBackend(CeedFree(&data->jit_source_path));
+  CeedCallBackend(CeedFree(&data->jit_source));
   CeedCallBackend(CeedFree(&data));
   return CEED_ERROR_SUCCESS;
 }

@@ -167,6 +167,7 @@ There are multiple supported backends, which can be selected at runtime in the e
 | `/gpu/cuda/ref`            | Reference pure CUDA kernels                       | Yes                   |
 | `/gpu/cuda/shared`         | Optimized pure CUDA kernels using shared memory   | Yes                   |
 | `/gpu/cuda/gen`            | Optimized pure CUDA kernels using code generation | No                    |
+| `/gpu/cuda/petsc`          | Pure CUDA kernels, JiT source from a user file    | Yes                   |
 ||
 | **HIP Native**             |
 | `/gpu/hip/ref`             | Reference pure HIP kernels                        | Yes                   |
@@ -210,6 +211,14 @@ If linking MKL and LIBXSMM is desired but the Makefile is not detecting `MKLROOT
 The LIBXSMM `main` development branch from 7 April 2024 or newer is required.
 
 The `/gpu/cuda/*` backends provide GPU performance strictly using CUDA.
+
+The `/gpu/cuda/petsc` backend behaves identically to `/gpu/cuda/ref`, except that it can optionally read additional information needed for just-in-time (JiT) compilation from a user-specified file at runtime, rather than requiring it to be fixed at compile time.
+The path to this file is passed by appending `:jit_source_file=/path/to/file` to the resource string, for example:
+
+> - `/gpu/cuda/petsc:jit_source_file=/path/to/file.h`
+
+The contents of this file are included verbatim ahead of every kernel compiled by libCEED for this `Ceed` context, so it can be used to supply application specific (e.g. PETSc specific) macros, types, or other definitions needed by user QFunctions at JiT time.
+If the `jit_source_file` option is not provided, `/gpu/cuda/petsc` behaves identically to `/gpu/cuda/ref`.
 
 The `/gpu/hip/*` backends provide GPU performance strictly using HIP.
 They are based on the `/gpu/cuda/*` backends.

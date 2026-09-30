@@ -68,9 +68,13 @@ typedef struct {
   int                   device_id;
   cublasHandle_t        cublas_handle;
   struct cudaDeviceProp device_prop;
+  char                 *jit_source_path;  // Absolute path to user-provided JiT source file, if any
+  char                 *jit_source;       // Contents of `jit_source_path`, included in every JiT compilation
 } Ceed_Cuda;
 
 CEED_INTERN int CeedInit_Cuda(Ceed ceed, const char *resource);
+
+CEED_INTERN int CeedSetJitSourceFile_Cuda(Ceed ceed, const char *resource, const char *option_name);
 
 CEED_INTERN int CeedDestroy_Cuda(Ceed ceed);
 
